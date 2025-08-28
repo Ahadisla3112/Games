@@ -56,3 +56,82 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clicker Game</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+  }
+  button {
+    padding: 20px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+  }
+  #points, #highScore {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+<h1>Clicker Game</h1>
+<div id="points">Points: 0</div>
+<div id="highScore">High Score: 0</div>
+<button id="clickBtn">Click Me!</button>
+<button id="upgradeBtn">Upgrade (+2 per click) - Cost: 10 points</button>
+
+<audio id="clickSound">
+  <source src="https://freesound.org/data/previews/256/256113_3263906-lq.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let points = 0;
+let pointsPerClick = 1;
+let upgradeCost = 10;
+let highScore = 0;
+
+const pointsDisplay = document.getElementById('points');
+const highScoreDisplay = document.getElementById('highScore');
+const clickBtn = document.getElementById('clickBtn');
+const upgradeBtn = document.getElementById('upgradeBtn');
+const clickSound = document.getElementById('clickSound');
+
+// Update high score
+function updateHighScore() {
+  if(points > highScore) {
+    highScore = points;
+    highScoreDisplay.textContent = 'High Score: ' + highScore;
+  }
+}
+
+// Clicking the main button
+clickBtn.addEventListener('click', () => {
+  points += pointsPerClick;
+  pointsDisplay.textContent = 'Points: ' + points;
+  updateHighScore();
+  clickSound.currentTime = 0;
+  clickSound.play();
+});
+
+// Buying an upgrade
+upgradeBtn.addEventListener('click', () => {
+  if(points >= upgradeCost) {
+    points -= upgradeCost;
+    pointsPerClick += 2;
+    upgradeCost = Math.floor(upgradeCost * 2);
+    upgradeBtn.textContent = `Upgrade (+2 per click) - Cost: ${upgradeCost} points`;
+    pointsDisplay.textContent = 'Points: ' + points;
+  } else {
+    alert("Not enough points!");
+  }
+});
+</script>
+</body>
+</html>
